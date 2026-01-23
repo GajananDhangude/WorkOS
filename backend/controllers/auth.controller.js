@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 
 async function registerUser(req , res) {
-    const {name , email , password , role} = req.body;
+    const {name , email , password , role , gender} = req.body;
 
     const isUserExists = await UserModel.findOne({email:email})
 
@@ -18,6 +18,7 @@ async function registerUser(req , res) {
     const newUser = await UserModel.create({
         name:name,
         email:email,
+        gender:gender,
         password:HashedPassword,
         role:role
     })
@@ -33,6 +34,7 @@ async function registerUser(req , res) {
         user:{
             id:newUser._id,
             name:newUser.name,
+            gender:newUser.gender,
             email:newUser.email,
             role:newUser.role
         }
