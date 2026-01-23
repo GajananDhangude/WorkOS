@@ -3,9 +3,12 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const AuthRoutes = require("./routes/auth.routes.js");
 const JobRoute = require("../backend/routes/job.route.js")
+const CompanyRoute = require("../backend/routes/company.routes.js")
+const cookieParser = require("cookie-parser")
 
 app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 
 
@@ -25,7 +28,8 @@ app.get("/" , (rea , res)=> {
 });
 
 app.use("/api/auth" , AuthRoutes);
-app.use("/api/jobs" , JobRoute)
+app.use("/api/jobs" , JobRoute);
+app.use("/api/company" , CompanyRoute)
 
 
 app.listen(8080 , () => {
