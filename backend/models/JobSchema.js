@@ -11,7 +11,8 @@ const JobSchema = new Schema({
     required: true
   },
   company: {
-    type: String,
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Company',
     required: true
   },
   location: {
@@ -25,12 +26,13 @@ const JobSchema = new Schema({
   jobType:{
     type: String,
     enum: ['Full-time', 'Part-time', 'Contract', 'Internship'],
-    required: true
+    default : "Full-time"
   },
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'User',
-    required:true
+    required: true
+    
   },
   applications:[{
     type:mongoose.Schema.Types.ObjectId,

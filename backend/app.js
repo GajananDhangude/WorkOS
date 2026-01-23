@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-const router = require("./routes/auth.routes.js");
+const AuthRoutes = require("./routes/auth.routes.js");
+const JobRoute = require("../backend/routes/job.route.js")
 
 app = express();
 app.use(express.json());
@@ -23,8 +24,8 @@ app.get("/" , (rea , res)=> {
     res.send("This is a Home Page");
 });
 
-app.use("/api/auth" , router);
-
+app.use("/api/auth" , AuthRoutes);
+app.use("/api/jobs" , JobRoute)
 
 
 app.listen(8080 , () => {
