@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+const cookieParser = require("cookie-parser")
+
 const AuthRoutes = require("./routes/auth.routes.js");
 const JobRoute = require("../backend/routes/job.route.js")
 const CompanyRoute = require("../backend/routes/company.routes.js")
-const cookieParser = require("cookie-parser")
+const ApplicationRoute = require("../backend/routes/application.route.js");
 
 app = express();
 app.use(express.json());
@@ -29,7 +31,8 @@ app.get("/" , (rea , res)=> {
 
 app.use("/api/auth" , AuthRoutes);
 app.use("/api/jobs" , JobRoute);
-app.use("/api/company" , CompanyRoute)
+app.use("/api/company" , CompanyRoute);
+app.use("/api/jobs" , ApplicationRoute)
 
 
 app.listen(8080 , () => {

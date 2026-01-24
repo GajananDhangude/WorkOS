@@ -2,7 +2,7 @@ const ApplicationModel = require("../models/ApplicationSchema.js")
 const JobModel = require("../models/JobSchema.js");
 
 
-async function ApplyJob(req , res) {
+async function ApplyJob (req , res) {
     const userId = req.user._id;
     const jobId = req.params._id;
 
@@ -33,9 +33,86 @@ async function ApplyJob(req , res) {
         applicant:userId
     })
 
-            return res.status(201).json({
-            message:"Job applied successfully.",
-            newApplication
+    jobs.applications.push(newApplication._id);
+    await jobs.save();
+
+    return res.status(201).json({
+        message:"Job applied successfully.",
+        newApplication
+    })
+
+    
+
+}
+
+
+async function getAppliedJobs(req , res){
+
+    try{
+
+        const userId = req._id;
+        const application = await ApplicationModel.find({applicant:userId}).sort({createdAt:-1}).populate({
+            path:'job',
+            options:{sort:{createdAt:-1}},
+            populate:{
+                path:'company',
+                options:{sort:{createdAt:-1}},
+            }
+        });
+
+        if(!application){
+            return res.status(404).json({
+                message:"No application Found",
+                success:false,
+            })
+        };
+
+        return res.status(201).json({
+            message:"Application Found",
+            application,
+            success:true,
         })
 
+
+
+
+    } catch(error) {
+        console.log(error)
+    }
+
+}
+
+
+async function getApplicants (req , res){
+    try{
+
+        const jobId = req.params._id;
+        const job = await JobModel.findById(jobId).populate({
+            path:'applications',
+            options:{sort:{createdAt:-1}},
+            populate:{
+                path:'applicant'
+            }
+        })
+
+        if(!job){
+            return res.status(404).json({
+                message:'Job not found.',
+                success:false
+            })
+        };
+        return res.status(200).json({
+            job, 
+            succees:true
+        });
+
+    } catch {
+        console.log(error)
+
+    }
+}
+
+module.exports = {
+    ApplyJob,
+    getAppliedJobs
 }

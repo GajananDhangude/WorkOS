@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
 const applicationSchema = new mongoose.Schema({
     job:{
@@ -18,4 +18,6 @@ const applicationSchema = new mongoose.Schema({
     }
 },{timestamps:true})
 
-export const Application = mongoose.model("Application",applicationSchema);
+const ApplicationModel = mongoose.model("Application" , applicationSchema)
+
+module.exports = ApplicationModel;
