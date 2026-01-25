@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser")
+const cors = require("cors")
 
 const AuthRoutes = require("./routes/auth.routes.js");
 const JobRoute = require("../backend/routes/job.route.js")
@@ -11,6 +12,13 @@ const ApplicationRoute = require("../backend/routes/application.route.js");
 app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+corsOptions = {
+    origin:"http://localhost:5173",
+    Credentials:true
+}
+
+app.use(cors(corsOptions))
 
 
 
@@ -32,7 +40,7 @@ app.get("/" , (rea , res)=> {
 app.use("/api/auth" , AuthRoutes);
 app.use("/api/jobs" , JobRoute);
 app.use("/api/company" , CompanyRoute);
-app.use("/api/jobs" , ApplicationRoute)
+app.use("/api" , ApplicationRoute)
 
 
 app.listen(8080 , () => {

@@ -22,7 +22,7 @@ const userSchema = new Schema({
     },
     role:{
         type: String,
-        enum: ['job_seeker', 'employer', 'admin'],
+        enum: ['job_seeker', 'employer', 'admin' , "student"],
         required: true,
         default: 'job_seeker',
     },

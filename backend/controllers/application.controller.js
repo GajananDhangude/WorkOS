@@ -50,7 +50,7 @@ async function getAppliedJobs(req , res){
 
     try{
 
-        const userId = req._id;
+        const userId = req.user_id;
         const application = await ApplicationModel.find({applicant:userId}).sort({createdAt:-1}).populate({
             path:'job',
             options:{sort:{createdAt:-1}},
