@@ -20,7 +20,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-extrabold bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent">JobPortal</span>
+            <Briefcase className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold text-gray-800">JobPortal</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -38,6 +39,9 @@ const Navbar = () => {
                   <>
                     <Link to="/post-job" className="text-gray-700 hover:text-primary transition">
                       Post Job
+                    </Link>
+                    <Link to="/my-jobs" className="text-gray-700 hover:text-primary transition">
+                      My Jobs
                     </Link>
                     <Link to="/companies" className="text-gray-700 hover:text-primary transition">
                       Companies
