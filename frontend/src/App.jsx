@@ -6,7 +6,7 @@ import Navbar from "./components/shared/Navbar.jsx"
 import Login from './components/auth/login.jsx'
 import Home from './pages/Home.jsx'
 import Footer from './components/shared/Footer.jsx'
-
+import SignUp from "../../frontend/src/components/auth/SignUp.jsx"
 
 export default function App() {
   return (
@@ -16,6 +16,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/login' element={<Login/>} />
+          <Route path='/register' element={<SignUp/>} />
         </Routes>
         <Footer/>
       </Router>
