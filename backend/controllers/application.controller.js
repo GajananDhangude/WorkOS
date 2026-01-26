@@ -50,7 +50,7 @@ async function getAppliedJobs(req , res){
 
     try{
 
-        const userId = req.user_id;
+        const userId = req.user._id;
         const application = await ApplicationModel.find({applicant:userId}).sort({createdAt:-1}).populate({
             path:'job',
             options:{sort:{createdAt:-1}},
@@ -67,7 +67,7 @@ async function getAppliedJobs(req , res){
             })
         };
 
-        return res.status(201).json({
+        return res.status(200).json({
             message:"Application Found",
             application,
             success:true,
@@ -85,7 +85,6 @@ async function getAppliedJobs(req , res){
 
 async function getApplicants (req , res){
     try{
-
         const jobId = req.params._id;
         const job = await JobModel.findById(jobId).populate({
             path:'applications',
@@ -101,18 +100,101 @@ async function getApplicants (req , res){
                 success:false
             })
         };
+        
         return res.status(200).json({
             job, 
-            succees:true
+            success:true
         });
 
-    } catch {
+    } catch(error) {
         console.log(error)
-
+        return res.status(500).json({
+            message:"Server error",
+            success:false
+        })
     }
 }
 
+async function updateApplicationStatus(req, res) {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status || !['pending', 'accepted', 'rejected'].includes(status.toLowerCase())) {
+            return res.status(400).json({
+                message: "Invalid status. Must be 'pending', 'accepted', or 'rejected'",
+                success: false
+            });
+        }
+
+        const application = await ApplicationModel.findByIdAndUpdate(
+            id,
+            { status: status.toLowerCase() },
+            { new: true }
+        ).populate('applicant').populate({
+            path: 'job',
+            populate: { path: 'company' }
+        });
+
+        if (!application) {
+            return res.status(404).json({
+                message: "Application not found",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            message: `Application ${status.toLowerCase()} successfully`,
+            application,
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Server error",
+            success: false
+        });
+    }
+}
+
+async function getApplicationById(req, res) {
+    try {
+        const { id } = req.params;
+
+        const application = await ApplicationModel.findById(id)
+            .populate('applicant')
+            .populate({
+                path: 'job',
+                populate: { path: 'company' }
+            });
+
+        if (!application) {
+            return res.status(404).json({
+                message: "Application not found",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            application,
+            success: true
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Server error",
+            success: false
+        });
+    }
+}
+
+// Update module.exports
 module.exports = {
     ApplyJob,
-    getAppliedJobs
+    getAppliedJobs,
+    getApplicants,
+    updateApplicationStatus,
+    getApplicationById  // ADD THIS
 }
